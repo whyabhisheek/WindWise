@@ -53,7 +53,21 @@ Backend: `cd backend; pytest`. Frontend: `cd frontend; npm run build`.
 
 ## Deployment and known limits
 
-The frontend container serves the Vite build with Nginx; deploy it to a container host or replace with a Vercel static deployment. FastAPI can be deployed to a Python ASGI host. Set `VITE_API_URL` at build time and configure backend `CORS_ORIGINS`. No deployment URL, public repository, or video is included yet.
+### Live deployments
+
+- Frontend: [https://windwise-seven.vercel.app/](https://windwise-seven.vercel.app/)
+- Backend health check: [https://windwise-one.vercel.app/api/health](https://windwise-one.vercel.app/api/health)
+- Backend API documentation: [https://windwise-one.vercel.app/docs](https://windwise-one.vercel.app/docs)
+- Source repository: [https://github.com/whyabhisheek/WindWise](https://github.com/whyabhisheek/WindWise)
+
+Vercel environment variables are configured separately for each project:
+
+| Vercel project | Name | Value |
+| --- | --- | --- |
+| Frontend (`windwise-seven`) | `VITE_API_URL` | `https://windwise-one.vercel.app` |
+| Backend (`windwise-one`) | `CORS_ORIGINS` | `https://windwise-seven.vercel.app` |
+
+Redeploy each project after changing its environment variables. Add any custom frontend domain to the backend's `CORS_ORIGINS` value as well. The frontend container serves the Vite build with Nginx; the FastAPI service is deployed separately.
 
 The live January 2026 request returned 1,488 FUELHH intervals (30-minute actuals) and 744 exact-time forecast matches (WINDFOR forecasts occur on hourly start times). Forecast coverage is 50% because of this interval cadence difference; only exact UTC `startTime` matches feed the metrics. Interpret the error metrics within this coverage limit. The app surfaces API failures and never substitutes fabricated metrics. The January daily queries returned complete windows in live verification; pagination metadata was not present in the observed responses.
 
